@@ -249,7 +249,7 @@ You will get the `msg` as callback argument.
 ttl.on("error", function( msg ){
     console.log(msg)
 });
-``
+```
 
 # The MIT License (MIT)
 
