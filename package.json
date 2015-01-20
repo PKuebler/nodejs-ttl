@@ -8,7 +8,12 @@
   "scripts"       : {
     "test"        : "node test/test"
   },
+  "repository"    : {
+    "type": "git",
+    "url": "https://github.com/PKuebler/nodejs-ttl"
+  },
   "devDependencies" : {
     "utest"         : "~0.0.8"
-  }
+  },
+  "license"       : "MIT"
 }
