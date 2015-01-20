@@ -4,9 +4,9 @@
   "keywords"      : ["ttl", "time to life", "cache"],
   "author"        : "Philipp Kuebler <info@pkuebler.de>",
   "main"          : "ttl.js",
-  "version"       : "0.1",
+  "version"       : "0.0.1",
   "scripts"       : {
-    "test"        : "test"
+    "test"        : "node test/test"
   },
   "devDependencies" : {
     "utest"         : "~0.0.8"
