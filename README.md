@@ -225,7 +225,7 @@ Fired when an item is expired.
 You will get the `key` and the `container` as callback argument.
 
 ```js
-ttl.on("push", function( key, container ){
+ttl.on("expired", function( key, container ){
     console.log(container);
     /*
     {
