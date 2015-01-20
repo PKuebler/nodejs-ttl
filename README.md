@@ -1,4 +1,4 @@
-node-ttl
+node-ttl [![Build Status](https://travis-ci.org/PKuebler/nodejs-ttl.svg?branch=master)](https://travis-ci.org/PKuebler/nodejs-ttl)
 ===========
 
 ## Simple Time to life (ttl) NodeJS Store 
