@@ -251,6 +251,10 @@ ttl.on("error", function( msg ){
 });
 ```
 
+# Contributors
+[Philipp](http://pkuebler.de/)    
+[Roman](https://github.com/romulka)  
+
 # The MIT License (MIT)
 
 
