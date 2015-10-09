@@ -34,9 +34,9 @@ Save the key.
 **Note:** Need a `value` or a (global/options) `timeOutFunction`. If the `value` is empty, it is loaded from the `timeOutFunction`. 
 
 * `key` the Key.
-* `value` *(Optimal)* A Variable, Object or Function.
-* `timeOutFunction(container)` *(Optimal)* Called when the time has expired or no value is defined.
-* `ttl` *(Optimal)* Custom Time to life.
+* `value` *(optional)* A Variable, Object or Function.
+* `timeOutFunction(container)` *(optional)* Called when the time has expired or no value is defined.
+* `ttl` *(optional)* Custom Time to life.
 
 ```js
 ttl.push('key1', 'value1');
@@ -215,7 +215,7 @@ ttl.on("del", function( key ){
 Fired when you call `ttl.clear()`.
 
 ```js
-ttl.on("del", function(){
+ttl.on("clear", function(){
 });
 ```
 
