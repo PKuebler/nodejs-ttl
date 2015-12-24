@@ -36,15 +36,16 @@ function Ttl(options) {
 	}
 
 	this.options = util._extend(this.options, options);
+	var self = this;
 
 	if(this.options.checkPeriode > 0)
 		timer = setInterval(function() {	
-			var keys = Object.keys(this._store);
+			var keys = Object.keys(self._store);
 
 			for (var i = 0; i < keys.length; i++) {
-				var obj = this._store[keys[i]];
+				var obj = self._store[keys[i]];
 
-				this._check(obj);
+				self._check(obj);
 			}
 		}, this.options.checkPeriode);
 }
