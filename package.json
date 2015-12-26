@@ -6,7 +6,7 @@
   "main"          : "ttl.js",
   "version"       : "0.0.4",
   "scripts"       : {
-    "test"        : "node test/test"
+    "test"        : "./node_modules/.bin/mocha test/test"
   },
   "repository"    : {
     "type": "git",
@@ -14,9 +14,6 @@
   },
   "dependencies": {
     "async": "*"
-  },
-  "devDependencies" : {
-    "utest"         : "~0.0.8"
   },
   "license"       : "MIT"
 }
