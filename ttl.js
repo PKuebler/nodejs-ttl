@@ -1,6 +1,7 @@
 var util = require('util'),
 	events = require('events'),
-	os = require('os');
+	os = require('os'),
+	async = require('async');
 
 var timer = null;
 
@@ -52,45 +53,36 @@ function Ttl(options) {
 
 util.inherits(Ttl, events.EventEmitter);
 
-Ttl.prototype.get = function(keys) {
+Ttl.prototype.get = function(keys, callback) {
+	var self = this;
+
 	if (!util.isArray(keys)) {
 		keys = [keys];
 	}
 
+	if (typeof callback === 'undefined')
+		callback = null;
+
 	var values = {};
 
-	for (var i = 0; i < keys.length; i++) {
-		var key = keys[i];
-
-		if (!this._store.hasOwnProperty(key)) {
-			values[key] = null;
-			continue;
-		}
-
-		var obj = this._store[key];
-
-		if (!this._check(obj)) {
-			values[key] = null;
-			continue;
-		}
-
-		// Last Usage
-		obj.lastUsage = os.uptime();
-
-		if (typeof obj.value === 'function') {
-			values[key] = obj.value();
-		} else {
-			values[key] = obj.value;
-		}
-		this.emit('get', key, values[key]);
-	}
-
-	if (keys.length == 1) {
-		return values[keys[0]];
-	} else if (keys.length > 1) {
-		return values;
+	if (callback) {
+		async.each(keys, function(key, cb) {
+			self._readObj(key, function(result) {
+				values[key] = result;
+				cb(null);
+			});
+		}, function(err){
+			// Read all Values
+			callback(self._shiftValue(keys, values));
+		});
 	} else {
-		return null;
+		for (var i = 0; i < keys.length; i++) {
+			var key = keys[i];
+
+			values[key] = this._readObj(key);
+		}
+
+		return this._shiftValue(keys, values);
 	}
 
 }
@@ -164,7 +156,67 @@ Ttl.prototype.getOptions = function() {
 	return this.options;
 };
 
-Ttl.prototype._check = function(obj, pass) {
+Ttl.prototype._shiftValue = function(keys, values) {
+	if (keys.length == 1) {
+		return values[keys[0]];
+	} else if (keys.length > 1) {
+		return values;
+	} else {
+		return null;
+	}	
+}
+
+Ttl.prototype._readObj = function(key, callback) {
+	var self = this;
+
+	if (!this._store.hasOwnProperty(key)) {
+		if (!callback)
+			return null;
+		else
+			callback(null);
+	}
+
+	var obj = this._store[key];
+
+	if (callback) {
+		this._check(obj, function(check) {
+			if (!check) {
+				callback(null);
+			} else {
+				self._readValue(obj, key, callback);
+			}
+		});
+	} else {
+		if (!this._check(obj)) {
+			return null;
+		} else {
+			return this._readValue(obj, key);
+		}
+	}
+}
+
+Ttl.prototype._readValue = function(obj, key, callback) {
+	// Last Usage
+	obj.lastUsage = os.uptime();
+
+	var value = null;
+
+	if (typeof obj.value === 'function') {
+		value = obj.value();
+	} else {
+		value = obj.value;
+	}
+	this.emit('get', key, value);
+
+	if (!callback)
+		return value;
+	else
+		callback(value);
+}
+
+Ttl.prototype._check = function(obj, callback, pass) {
+	var self = this;
+
 	if (typeof pass === 'undefined')
 		pass = 1;
 
@@ -177,15 +229,30 @@ Ttl.prototype._check = function(obj, pass) {
 		this.emit('expired', obj.key, obj);
 
 		if (obj.timeOutFunction != null && pass == 1) {
-			obj.timeOutFunction(obj);
-			this._check(obj, pass+1);
+			if (callback) {
+				obj.timeOutFunction(obj, function(callback) {
+					self._check(obj, callback, pass+1);
+				});
+			} else {
+				obj.timeOutFunction(obj);
+				this._check(obj, callback, pass+1);				
+			}
 		} else {
 			this.del(obj.key);
 		}
 
-		return false;
+		if (callback) {
+			callback(false);
+		} else {
+			return false;			
+		}
 	}
-	return true;
+
+	if (callback) {
+		callback(true);
+	} else {
+		return true;			
+	}
 
 }
 

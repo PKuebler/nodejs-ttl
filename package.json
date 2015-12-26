@@ -4,13 +4,16 @@
   "keywords"      : ["ttl", "time to life", "cache"],
   "author"        : "Philipp Kuebler <info@pkuebler.de>",
   "main"          : "ttl.js",
-  "version"       : "0.0.3",
+  "version"       : "0.0.4",
   "scripts"       : {
     "test"        : "node test/test"
   },
   "repository"    : {
     "type": "git",
     "url": "https://github.com/PKuebler/nodejs-ttl"
+  },
+  "dependencies": {
+    "async": "*"
   },
   "devDependencies" : {
     "utest"         : "~0.0.8"
