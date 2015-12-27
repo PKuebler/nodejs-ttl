@@ -4,7 +4,7 @@
   "keywords"      : ["ttl", "time to life", "cache"],
   "author"        : "Philipp Kuebler <info@pkuebler.de>",
   "main"          : "ttl.js",
-  "version"       : "0.0.4",
+  "version"       : "0.0.5",
   "scripts"       : {
     "test"        : "./node_modules/.bin/mocha test/test"
   },
@@ -15,5 +15,8 @@
   "dependencies": {
     "async": "*"
   },
+  "devDependencies": {
+    "mocha": "*"
+  }
   "license"       : "MIT"
 }
