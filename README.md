@@ -75,6 +75,20 @@ Returns the value. If not found return null;
 var value = ttl.get('key');
 ```
 
+## Get  a key async (GET ASYNC):
+
+`ttl.get(key, function(value){})`
+
+Get the `value` from `key`.
+Returns the value. If not found return null;
+
+```js
+ttl.get('key', function(value) {
+    // null if not found.    
+});
+```
+
+
 ## Delete a key (DEL):
 
 `ttl.del(key)`
@@ -107,6 +121,19 @@ console.log(value);
     "key3": null // Not Found
 }
  */
+```
+
+## Get multiple keys async (MGET ASYNC)
+
+`ttl.get(keys[], function(values){})`
+
+Get the `value`s by `key` Array.
+If the value was found it returns an object with the `key` `value` pairs;
+
+```js
+var value = ttl.get(['key1', 'key2', 'key3'], function(values) {
+    console.log(values);
+});
 ```
 
 ## Delete multiple keys (MDELETE)

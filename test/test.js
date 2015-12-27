@@ -302,3 +302,13 @@ describe('Expired', function() {
 		assert.notEqual(random, self.ttl._store['key2'].value);
 	});
 });
+
+describe('Async', function() {
+	before(function() {
+		self.ttl = new timeToLife();
+	});
+	after(function() {
+		self.ttl = null;
+	});
+	// ToDo: Write Async Tests
+});
