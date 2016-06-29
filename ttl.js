@@ -14,7 +14,7 @@ function Ttl(options) {
 		timeOutFunction: null,
 		lastUsage: false,
 		checkPeriode: 0
-	}
+	};
 
 	this.on("get", function() {});
 	this.on("push", function() {});
@@ -39,13 +39,12 @@ function Ttl(options) {
 	this.options = util._extend(this.options, options);
 	var self = this;
 
-	if(this.options.checkPeriode > 0)
-		timer = setInterval(function() {	
-			var keys = Object.keys(self._store);
+	if (this.options.checkPeriode > 0)
+		timer = setInterval(function() {
+			var keys = Object.keys(self._store), i=0, len=keys.length, obj;
 
-			for (var i = 0; i < keys.length; i++) {
-				var obj = self._store[keys[i]];
-
+			for (; i < len; i++) {
+				obj = self._store[keys[i]];
 				self._check(obj);
 			}
 		}, this.options.checkPeriode);
@@ -56,14 +55,15 @@ util.inherits(Ttl, events.EventEmitter);
 Ttl.prototype.get = function(keys, callback) {
 	var self = this;
 
-	if (!util.isArray(keys)) {
+	if (Array.isArray(keys) === false) {
 		keys = [keys];
 	}
 
-	if (typeof callback === 'undefined')
+	if (typeof callback === 'undefined') {
 		callback = null;
+	}
 
-	var values = {};
+	var values = {}, i=0, len=keys.length, key;
 
 	if (callback) {
 		async.each(keys, function(key, cb) {
@@ -76,26 +76,25 @@ Ttl.prototype.get = function(keys, callback) {
 			callback(self._shiftValue(keys, values));
 		});
 	} else {
-		for (var i = 0; i < keys.length; i++) {
-			var key = keys[i];
-
+		for (; i < len; i++) {
+			key = keys[i];
 			values[key] = this._readObj(key);
 		}
 
 		return this._shiftValue(keys, values);
 	}
-
-}
+};
 
 Ttl.prototype.push = function(key, value, timeOutFunction, ttl) {
 	if (typeof ttl === 'undefined') {
 		ttl = this.options.ttl;
 	}
 
-	if (typeof timeOutFunction !== 'function')
+	if (typeof timeOutFunction !== 'function') {
 		timeOutFunction = this.options.timeOutFunction;
+	}
 
-	if ((value == null) && typeof timeOutFunction !== 'function') {
+	if ((value === null) && typeof timeOutFunction !== 'function') {
 		this.emit("error", "Push missing a Value or a TimeOutFunction");
 		return false;
 	}
@@ -107,9 +106,9 @@ Ttl.prototype.push = function(key, value, timeOutFunction, ttl) {
 		key: key,
 		value: value,
 		timeOutFunction: timeOutFunction
-	}
+	};
 
-	if ((typeof value === 'undefined' || value == null) && typeof timeOutFunction === 'function') {
+	if ((typeof value === 'undefined' || value === null) && typeof timeOutFunction === 'function') {
 		timeOutFunction(container);
 	}
 
@@ -117,20 +116,20 @@ Ttl.prototype.push = function(key, value, timeOutFunction, ttl) {
 
 	this._store[key] = container;
 	return true;
-}
+};
 
 Ttl.prototype.size = function() {
 	return Object.keys(this._store).length;
-}
+};
 
 Ttl.prototype.del = function(keys) {
-	if (!util.isArray(keys)) {
+	if (Array.isArray(keys) === false) {
 		keys = [keys];
 	}
 
-	var count = 0;
+	var count = 0, i=0, len=keys.length;
 
-	for (var i = 0; i < keys.length; i++) {
+	for (; i < len; i++) {
 		var key = keys[i];
 
 		if (!this._store.hasOwnProperty(key)) {
@@ -144,36 +143,36 @@ Ttl.prototype.del = function(keys) {
 	}
 
 	return count;
-}
+};
 
 Ttl.prototype.clear = function() {
 	this._store = {};
 	this.emit('clear');
-}
-
+};
 
 Ttl.prototype.getOptions = function() {
 	return this.options;
 };
 
 Ttl.prototype._shiftValue = function(keys, values) {
-	if (keys.length == 1) {
+	if (keys.length === 1) {
 		return values[keys[0]];
 	} else if (keys.length > 1) {
 		return values;
 	} else {
 		return null;
-	}	
-}
+	}
+};
 
 Ttl.prototype._readObj = function(key, callback) {
 	var self = this;
 
 	if (!this._store.hasOwnProperty(key)) {
-		if (!callback)
+		if (!callback) {
 			return null;
-		else
+		} else {
 			callback(null);
+		}
 	}
 
 	var obj = this._store[key];
@@ -193,7 +192,7 @@ Ttl.prototype._readObj = function(key, callback) {
 			return this._readValue(obj, key);
 		}
 	}
-}
+};
 
 Ttl.prototype._readValue = function(obj, key, callback) {
 	// Last Usage
@@ -208,34 +207,36 @@ Ttl.prototype._readValue = function(obj, key, callback) {
 	}
 	this.emit('get', key, value);
 
-	if (!callback)
+	if (!callback) {
 		return value;
-	else
+	} else {
 		callback(value);
-}
+	}
+};
 
 Ttl.prototype._check = function(obj, callback, pass) {
 	var self = this;
 
-	if (typeof pass === 'undefined')
+	if (typeof pass === 'undefined') {
 		pass = 1;
+	}
 
 	var lastTime = obj.createTime;
-	if (this.options.lastUsage)
+	if (this.options.lastUsage) {
 		lastTime = obj.lastUsage;
+	}
 
 	if (obj.ttl > 0 && os.uptime()-lastTime > obj.ttl) {
-		// Abgelaufen
 		this.emit('expired', obj.key, obj);
 
-		if (obj.timeOutFunction != null && pass == 1) {
+		if (obj.timeOutFunction !== null && pass === 1) {
 			if (callback) {
 				obj.timeOutFunction(obj, function(callback) {
 					self._check(obj, callback, pass+1);
 				});
 			} else {
 				obj.timeOutFunction(obj);
-				this._check(obj, callback, pass+1);				
+				this._check(obj, callback, pass+1);
 			}
 		} else {
 			this.del(obj.key);
@@ -244,16 +245,15 @@ Ttl.prototype._check = function(obj, callback, pass) {
 		if (callback) {
 			callback(false);
 		} else {
-			return false;			
+			return false;
 		}
 	}
 
 	if (callback) {
 		callback(true);
 	} else {
-		return true;			
+		return true;
 	}
-
-}
+};
 
 module.exports = Ttl;
