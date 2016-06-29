@@ -39,7 +39,7 @@ function Ttl(options) {
 	this.options = util._extend(this.options, options);
 	var self = this;
 
-	if (this.options.checkPeriode > 0)
+	if (this.options.checkPeriode > 0) {
 		timer = setInterval(function() {
 			var keys = Object.keys(self._store), i=0, len=keys.length, obj;
 
@@ -48,6 +48,7 @@ function Ttl(options) {
 				self._check(obj);
 			}
 		}, this.options.checkPeriode);
+	}
 }
 
 util.inherits(Ttl, events.EventEmitter);
@@ -63,7 +64,8 @@ Ttl.prototype.get = function(keys, callback) {
 		callback = null;
 	}
 
-	var values = {}, i=0, len=keys.length, key;
+	var values = {},
+			i=0, len=keys.length, key;
 
 	if (callback) {
 		async.each(keys, function(key, cb) {
@@ -127,10 +129,11 @@ Ttl.prototype.del = function(keys) {
 		keys = [keys];
 	}
 
-	var count = 0, i=0, len=keys.length;
+	var count = 0,
+			i=0, len=keys.length, key;
 
 	for (; i < len; i++) {
-		var key = keys[i];
+		key = keys[i];
 
 		if (!this._store.hasOwnProperty(key)) {
 			continue;
