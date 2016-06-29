@@ -94,7 +94,7 @@ Ttl.prototype.push = function(key, value, timeOutFunction, ttl) {
 		timeOutFunction = this.options.timeOutFunction;
 	}
 
-	if ((value === null) && typeof timeOutFunction !== 'function') {
+	if ((typeof value === 'undefined' || value === null) && typeof timeOutFunction !== 'function') {
 		this.emit("error", "Push missing a Value or a TimeOutFunction");
 		return false;
 	}
