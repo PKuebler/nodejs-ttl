@@ -1,14 +1,18 @@
 {
-  "name"          : "node-ttl",
-  "description"   : "Time to life Cache in node.js",
-  "keywords"      : ["ttl", "time to life", "cache"],
-  "author"        : "Philipp Kuebler <info@pkuebler.de>",
-  "main"          : "ttl.js",
-  "version"       : "0.0.5",
-  "scripts"       : {
-    "test"        : "./node_modules/.bin/mocha test/test"
+  "name": "node-ttl",
+  "description": "Time to life Cache in node.js",
+  "keywords": [
+    "ttl",
+    "time to life",
+    "cache"
+  ],
+  "author": "Philipp Kuebler <info@pkuebler.de>",
+  "main": "ttl.js",
+  "version": "0.0.5",
+  "scripts": {
+    "test": "./node_modules/.bin/mocha test/test"
   },
-  "repository"    : {
+  "repository": {
     "type": "git",
     "url": "https://github.com/PKuebler/nodejs-ttl"
   },
@@ -18,5 +22,5 @@
   "devDependencies": {
     "mocha": "*"
   },
-  "license"       : "MIT"
+  "license": "MIT"
 }
