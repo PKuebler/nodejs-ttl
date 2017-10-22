@@ -282,6 +282,7 @@ ttl.on("error", function( msg ){
 [Philipp](http://pkuebler.de/)    
 [Roman](https://github.com/romulka)  
 [Ligustah](https://github.com/ligustah)
+[hellobertrand](https://github.com/hellobertrand)
 
 # The MIT License (MIT)
 
