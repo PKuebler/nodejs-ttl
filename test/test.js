@@ -48,14 +48,14 @@ describe('Push', function() {
 	});
 
 	it('No Parameters', function() {
-		assert.ifError(self.ttl.push('myKey'));
-		assert.ifError(self.ttl._store.hasOwnProperty('myKey'));
+		assert.ok(!self.ttl.push('myKey'));
+		assert.ok(!self.ttl._store.hasOwnProperty('myKey'));
 	});
 
 	it('Content', function() {
 		self.ttl.push('myKey', {name: 'Test Content'});
 
-		assert.ifError(!self.ttl._store.hasOwnProperty('myKey'));
+		assert.ok(self.ttl._store.hasOwnProperty('myKey'));
 		assert.equal(self.ttl._store['myKey'].value.name, 'Test Content');
 
 		delete self.ttl._store['myKey'];
@@ -135,7 +135,7 @@ describe('Push with Option', function() {
 	});
 
 	it('Method', function() {
-		assert.ifError(!self.ttl.push('myKey'));
+		assert.ok(self.ttl.push('myKey'));
 
 		self.ttl._store['myKey'].timeOutFunction(self.ttl._store['myKey']);
 
@@ -209,8 +209,8 @@ describe('Remove', function() {
 			value: 'Test Content'
 		}
 
-		assert.ifError(!self.ttl.del('myKey'));
-		assert.ifError(self.ttl._store.hasOwnProperty('myKey'));
+		assert.ok(self.ttl.del('myKey'));
+		assert.ok(!self.ttl._store.hasOwnProperty('myKey'));
 
 		delete self.ttl._store['myKey'];
 	});
@@ -243,9 +243,9 @@ describe('Multiple', function() {
 		var value = self.ttl.del(["key1","key2","key4"]);
 		assert.equal(value, 3);
 
-		assert.ifError(self.ttl._store.hasOwnProperty('key1'));
-		assert.ifError(!self.ttl._store.hasOwnProperty('key3'));
-		assert.ifError(self.ttl._store.hasOwnProperty('key4'));
+		assert.ok(!self.ttl._store.hasOwnProperty('key1'));
+		assert.ok(self.ttl._store.hasOwnProperty('key3'));
+		assert.ok(!self.ttl._store.hasOwnProperty('key4'));
 
 		delete self.ttl._store['key3'];
 	});
@@ -286,8 +286,8 @@ describe('Expired', function() {
 	it('Check', function() {
 		self.ttl.push("key1", randomString(20), null, 5);
 		self.ttl._store['key1'].createTime = self.ttl._store['key1'].createTime-1000;
-		assert.ifError(self.ttl._check(self.ttl._store["key1"]));
-		assert.ifError(self.ttl._store.hasOwnProperty('key1'));
+		assert.ok(!self.ttl._check(self.ttl._store["key1"]));
+		assert.ok(!self.ttl._store.hasOwnProperty('key1'));
 	});
 	it('TimeOutFunction', function() {
 		var random = randomString(20);
