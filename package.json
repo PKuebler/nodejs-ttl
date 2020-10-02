@@ -8,7 +8,7 @@
   ],
   "author": "Philipp Kuebler <info@pkuebler.de>",
   "main": "ttl.js",
-  "version": "0.0.7",
+  "version": "0.1.0",
   "scripts": {
     "test": "./node_modules/.bin/mocha test/test"
   },
