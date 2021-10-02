@@ -279,10 +279,8 @@ ttl.on("error", function( msg ){
 ```
 
 # Contributors
-[Philipp](http://pkuebler.de/)    
-[Roman](https://github.com/romulka)  
-[Ligustah](https://github.com/ligustah)
-[hellobertrand](https://github.com/hellobertrand)
+
+[List of Contributors](https://github.com/PKuebler/nodejs-ttl/graphs/contributors)
 
 # The MIT License (MIT)
 
