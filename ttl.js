@@ -48,6 +48,7 @@ function Ttl(options) {
 				self._check(obj);
 			}
 		}, this.options.checkPeriode);
+		timer.unref();
 	}
 }
 
